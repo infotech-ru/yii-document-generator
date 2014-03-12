@@ -111,7 +111,7 @@ class GeneratorServiceSpec extends ObjectBehavior
 
 class RendererStub implements RendererInterface
 {
-    public function generate($templatePath, array $data)
+    public function render($templatePath, array $data)
     {
         return '';
     }

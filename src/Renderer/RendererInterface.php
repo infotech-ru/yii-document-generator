@@ -20,5 +20,5 @@ interface RendererInterface
      * @param array $data
      * @return string Rendered document as binary string
      */
-    function generate($templatePath, array $data);
+    function render($templatePath, array $data);
 } 
