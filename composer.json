@@ -1,0 +1,33 @@
+{
+    "name": "infotech/yii-document-generator",
+    "description": "Simple yet powerful document rendering Yii Framework application component.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anton Tyutin",
+            "email": "anton@tyutin.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require-dev": {
+        "yiisoft/yii": "dev-master",
+        "phpspec/phpspec": "2.0.*@dev"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Infotech\\DocumentGenerator\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "vendor/yiisoft/yii/framework/base/",
+            "vendor/yiisoft/yii/framework/db/"
+        ],
+        "files": [
+            "vendor/yiisoft/yii/framework/yii.php"
+        ]
+    }
+}
