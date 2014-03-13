@@ -129,4 +129,45 @@ class GeneratorService extends CApplicationComponent
         $this->renderers[$name] = $renderer;
     }
 
+    /**
+     * @param string $name
+     * @return AbstractDocumentType
+     * @throws GeneratorServiceException while requested unregistered diocument type
+     */
+    public function getDocumentType($name)
+    {
+        if (!isset($this->documentTypes[$name])) {
+            throw new GeneratorServiceException(sprintf('Document type "%s" is not registered.', $name));
+        }
+        return $this->documentTypes[$name];
+    }
+
+    /**
+     * @param string $name
+     * @return RendererInterface
+     * @throws GeneratorServiceException while requested unregistered renderer
+     */
+    public function getRenderer($name)
+    {
+        if (!isset($this->renderers[$name])) {
+            throw new GeneratorServiceException(sprintf('Renderer "%s" is not registered.', $name));
+        }
+        return $this->renderers[$name];
+    }
+
+    /**
+     * @param string $templatePath       Path to template file
+     * @param string $rendererName       Name of registered renderer
+     * @param string $documentTypeName   Name of registered document type
+     * @param mixed  $dataKey            Data identifier for template substitutions
+     * @return string Rendered document as binary string
+     */
+    public function generate($templatePath, $rendererName, $documentTypeName, $dataKey)
+    {
+        return $this->getRenderer($rendererName)->render(
+            $templatePath,
+            $this->getDocumentType($documentTypeName)->getData($dataKey)
+        );
+    }
+
 }

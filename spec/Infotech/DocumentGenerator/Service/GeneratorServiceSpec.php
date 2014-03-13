@@ -107,6 +107,24 @@ class GeneratorServiceSpec extends ObjectBehavior
                 'doctype' => 'stdClass',
             ]);
     }
+
+    function it_can_generate_document_with_proper_renderer_and_type(
+        RendererInterface $renderer,
+        AbstractDocumentType $docType
+    )
+    {
+        $file = 'some/template/file.format';
+        $dataKey = 'data-key';
+        $data = ['PLACEHOLDER' => 'substitution'];
+        $renderedDocument = 'rendered document';
+
+        $renderer->render($file, $data)->shouldBeCalled()->willReturn($renderedDocument);
+        $docType->getData($dataKey)->shouldBeCalled()->willReturn($data);
+
+        $this->registerRenderer('format', $renderer);
+        $this->registerDocumentType('doc-type', $docType);
+        $this->generate($file, 'format', 'doc-type', $dataKey)->shouldReturn($renderedDocument);
+    }
 }
 
 class RendererStub implements RendererInterface
