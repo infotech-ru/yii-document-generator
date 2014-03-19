@@ -170,4 +170,18 @@ class GeneratorService extends CApplicationComponent
         );
     }
 
+    /**
+     * @param string $templatePath       Path to template file
+     * @param string $rendererName       Name of registered renderer
+     * @param string $documentTypeName   Name of registered document type
+     * @return string Rendered document as binary string
+     */
+    public function generateSample($templatePath, $rendererName, $documentTypeName)
+    {
+        return $this->getRenderer($rendererName)->render(
+            $templatePath,
+            $this->getDocumentType($documentTypeName)->getSampleData()
+        );
+    }
+
 }
