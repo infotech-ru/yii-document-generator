@@ -28,4 +28,11 @@ interface FetcherInterface
      * @throw DataNotFoundException when can't find data associated with specified key
      */
     public function getData($key);
+
+    /**
+     * Get sample of placeholder substitutions
+     *
+     * @return array Placeholders to data strings map
+     */
+    public function getSampleData();
 }

@@ -158,4 +158,9 @@ class FetcherStub implements FetcherInterface
     {
         return ['PLACEHOLDER' => $key];
     }
+
+    public function getSampleData()
+    {
+        return ['PLACEHOLDER' => 'sample'];
+    }
 }

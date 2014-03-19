@@ -38,9 +38,25 @@ abstract class AbstractDocumentType
         return $this->dataFetcher;
     }
 
+    /**
+     * Get real substitution data
+     *
+     * @param mixed $key Data identifier
+     * @return array
+     */
     public function getData($key)
     {
         return $this->getDataFetcher()->getData($key);
+    }
+
+    /**
+     * Get sample substitutions data
+     *
+     * @return array
+     */
+    public function getSampleData()
+    {
+        return $this->getDataFetcher()->getSampleData();
     }
 
     /**
