@@ -160,13 +160,14 @@ class GeneratorService extends CApplicationComponent
      * @param string $rendererName       Name of registered renderer
      * @param string $documentTypeName   Name of registered document type
      * @param mixed  $dataKey            Data identifier for template substitutions
+     * @param string $fetcher            Data fetcher name (defined by document type)
      * @return string Rendered document as binary string
      */
-    public function generate($templatePath, $rendererName, $documentTypeName, $dataKey)
+    public function generate($templatePath, $rendererName, $documentTypeName, $dataKey, $fetcher = AbstractDocumentType::DEFAULT_FETCHER_NAME)
     {
         return $this->getRenderer($rendererName)->render(
             $templatePath,
-            $this->getDocumentType($documentTypeName)->getData($dataKey)
+            $this->getDocumentType($documentTypeName)->getData($dataKey, $fetcher)
         );
     }
 

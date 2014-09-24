@@ -17,25 +17,28 @@ use Infotech\DocumentGenerator\DataFetcher\FetcherInterface;
  */
 abstract class AbstractDocumentType
 {
+    const DEFAULT_FETCHER_NAME = 'default';
+
     /**
-     * @var FetcherInterface
+     * @var FetcherInterface[]
      */
-    private $dataFetcher;
+    private $dataFetchers = array();
 
     public function getPlaceholdersInfo()
     {
-        return $this->getDataFetcher()->getPlaceholdersInfo();
+        return $this->getDataFetcher(self::DEFAULT_FETCHER_NAME)->getPlaceholdersInfo();
     }
 
     /**
      * @return FetcherInterface
      */
-    public function getDataFetcher()
+    public function getDataFetcher($fetcher)
     {
-        if (null === $this->dataFetcher) {
-            $this->dataFetcher = $this->createDataFetcher();
+        $fetcher = (string)$fetcher;
+        if (!isset($this->dataFetchers[$fetcher])) {
+            $this->dataFetchers[$fetcher] = $this->createDataFetcher($fetcher);
         }
-        return $this->dataFetcher;
+        return $this->dataFetchers[$fetcher];
     }
 
     /**
@@ -44,9 +47,9 @@ abstract class AbstractDocumentType
      * @param mixed $key Data identifier
      * @return array
      */
-    public function getData($key)
+    public function getData($key, $fetcher = self::DEFAULT_FETCHER_NAME)
     {
-        return $this->getDataFetcher()->getData($key);
+        return $this->getDataFetcher($fetcher)->getData($key);
     }
 
     /**
@@ -54,14 +57,17 @@ abstract class AbstractDocumentType
      *
      * @return array
      */
-    public function getSampleData()
+    public function getSampleData($fetcher = self::DEFAULT_FETCHER_NAME)
     {
-        return $this->getDataFetcher()->getSampleData();
+        return $this->getDataFetcher($fetcher)->getSampleData();
     }
 
     /**
+     * Create data fetcher by given name
+     *
+     * @param string   $name        Name of fetcher to create
      * @return FetcherInterface
      */
-    abstract public function createDataFetcher();
+    abstract public function createDataFetcher($name);
 
-} 
+}

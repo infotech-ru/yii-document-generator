@@ -119,11 +119,30 @@ class GeneratorServiceSpec extends ObjectBehavior
         $renderedDocument = 'rendered document';
 
         $renderer->render($file, $data)->shouldBeCalled()->willReturn($renderedDocument);
-        $docType->getData($dataKey)->shouldBeCalled()->willReturn($data);
+        $docType->getData($dataKey, AbstractDocumentType::DEFAULT_FETCHER_NAME)->shouldBeCalled()->willReturn($data);
 
         $this->registerRenderer('format', $renderer);
         $this->registerDocumentType('doc-type', $docType);
         $this->generate($file, 'format', 'doc-type', $dataKey)->shouldReturn($renderedDocument);
+    }
+
+    function it_can_generate_document_with_proper_renderer_and_type_and_fetcher(
+        RendererInterface $renderer,
+        AbstractDocumentType $docType
+    )
+    {
+        $file = 'some/template/file.format';
+        $dataKey = 'data-key';
+        $fetcher = 'fetcher';
+        $data = ['PLACEHOLDER' => 'substitution'];
+        $renderedDocument = 'rendered document';
+
+        $renderer->render($file, $data)->shouldBeCalled()->willReturn($renderedDocument);
+        $docType->getData($dataKey, $fetcher)->shouldBeCalled()->willReturn($data);
+
+        $this->registerRenderer('format', $renderer);
+        $this->registerDocumentType('doc-type', $docType);
+        $this->generate($file, 'format', 'doc-type', $dataKey, $fetcher)->shouldReturn($renderedDocument);
     }
 }
 
@@ -141,7 +160,7 @@ class DocumentTypeStub extends AbstractDocumentType
     /**
      * @return FetcherInterface
      */
-    public function createDataFetcher()
+    public function createDataFetcher($name)
     {
         return new FetcherStub();
     }
